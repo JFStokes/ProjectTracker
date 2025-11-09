@@ -159,3 +159,4 @@ C:\Users\Josh\OneDrive\Dev\ProjectTracker\obj\Debug\net9.0\refint\ProjectTracker
 C:\Users\Josh\OneDrive\Dev\ProjectTracker\obj\Debug\net9.0\ProjectTracker.pdb
 C:\Users\Josh\OneDrive\Dev\ProjectTracker\obj\Debug\net9.0\ProjectTracker.genruntimeconfig.cache
 C:\Users\Josh\OneDrive\Dev\ProjectTracker\obj\Debug\net9.0\ref\ProjectTracker.dll
+C:\Users\Josh\OneDrive\Dev\ProjectTracker\obj\Debug\net9.0\ProjectTracker.sourcelink.json

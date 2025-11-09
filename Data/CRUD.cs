@@ -23,6 +23,21 @@ public class CRUD
     }
 
     // ########## SHOW PROJECT ########## 
+    public static async Task ShowProjects()
+    {
+        using (var context = new ProjectTrackerContext())
+        {
+            var proj = await context.Projects
+                .Where(p => p.ProjectComplete == false)
+                .ToListAsync();
+
+            Console.WriteLine("PROJECT\t\tSTART-DATE\t\tGOAL-DATE");
+            foreach (Project p in proj)
+            {
+                Console.WriteLine($"{p.ProjectName}\t\t{p.StartDate}\t\t{p.GoalDate}");
+            }
+        }
+    }
 
     // ########## EDIT PROJECT ########## 
 

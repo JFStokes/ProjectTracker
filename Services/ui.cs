@@ -6,7 +6,7 @@ public class UI
         // Show Projects.
         Console.Clear();
         Console.WriteLine("----- MAIN MENU -----");
-        Console.WriteLine(">>> SHOW PROJECTS HERE <<<");
+        await CRUD.ShowProjects();
 
         // Show Options.
         Console.WriteLine("\n1) Project Menu");
