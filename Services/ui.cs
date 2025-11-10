@@ -110,7 +110,7 @@ public class UI
         }
         else if (input == "dt")
         {
-            Console.WriteLine(">>> DELETE TASK HERE <<<");
+            await CRUD.DeleteTask();
             Console.ReadLine();
             ProjectMenu(selectedProjInt);
         }

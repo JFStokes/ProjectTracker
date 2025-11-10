@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 
 public class CRUD
@@ -203,5 +204,60 @@ public class CRUD
     }
 
     // ########## DELETE TASK ########## 
-    
+    public async static Task DeleteTask()
+    {
+        Console.Write("\nDELETE Task ID: ");
+        string inputStr = Console.ReadLine()!;
+        int inputInt = Convert.ToInt32(inputStr);
+        Console.WriteLine("Enter 'DELETE' if you are sure you want to delete this task.");
+        Console.Write("-> ");
+        inputStr = Console.ReadLine()!;
+
+        try
+            {
+                if (inputStr == "DELETE")
+                {
+                    using (var context = new ProjectTrackerContext())
+                    {
+                        var projTask = await context.projectTasks
+                            .Include(t => t.Project)
+                            .SingleAsync(t => t.Id == inputInt);
+                        string projTaskName = projTask.TaskName;
+
+                        if (projTask.TaskComplete && projTask.Project != null)
+                        {
+                            projTask.Project.CompletedTasks -= 1;
+                            projTask.Project.TotalTasks -= 1;
+                            Console.WriteLine($"Project: {projTask.Project.ProjectName} minus 1 completed task and 1 total task.");
+                        }
+                        else if (projTask.Project != null)
+                        {
+                            projTask.Project.TotalTasks -= 1;
+                            Console.WriteLine($"Task NOT completed. Project: {projTask.Project.ProjectName} minus 1 total task.");
+                        }
+
+                        context.projectTasks.Remove(projTask);
+                        await context.SaveChangesAsync();
+                        Console.WriteLine($"{projTaskName} (ID: {inputInt}) has been DELETED...");
+                    }
+                }
+                else
+                {
+                    Console.Write("\nInvalid entry...");
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                Console.Clear();
+                Console.WriteLine("----------------------ERROR-----------------------");
+                Console.Write("INVALID ID...");
+            }
+            catch (Exception ex)
+            {
+                Console.Clear();
+                Console.WriteLine("----------------------ERROR-----------------------");
+                Console.WriteLine($"Something went wrong: {ex.Message}");
+                Console.WriteLine($"Exception type: {ex.GetType().Name}");
+            }
+    }
 }
