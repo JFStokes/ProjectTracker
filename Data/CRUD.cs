@@ -76,6 +76,33 @@ public class CRUD
     }
 
     // ########## EDIT PROJECT ########## 
+    public async static Task EditProject(int projId)
+    {
+        using (var context = new ProjectTrackerContext())
+        {
+            var proj = await context.Projects.SingleAsync(p => p.Id == projId);
+
+            // Edit Name.
+            Console.Write($"Project Name from {proj.ProjectName} to: ");
+            string inputStr = Console.ReadLine()!;
+            proj.ProjectName = inputStr;
+
+            // Edit Start Date.
+            Console.Write($"StartDate from {proj.StartDate} to (MM-DD-YYYY): ");
+            inputStr = Console.ReadLine()!;
+            DateOnly.TryParse(inputStr, out DateOnly startD);
+            proj.StartDate = startD;
+
+            // Edit Goal Date.
+            Console.Write($"GoalDate from {proj.GoalDate} to (MM-DD-YYYY): ");
+            inputStr = Console.ReadLine()!;
+            DateOnly.TryParse(inputStr, out DateOnly goalD);
+            proj.GoalDate = goalD;
+
+            await context.SaveChangesAsync();
+            Console.Write("Edits complete...");
+        }
+    }
 
     // ########## COMPLETE PROJECT ########## 
 

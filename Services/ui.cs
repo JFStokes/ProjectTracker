@@ -86,7 +86,7 @@ public class UI
         // Logic.
         if (input == "1")
         {
-            Console.WriteLine(">>> EDIT PROJECT HERE <<<");
+            await CRUD.EditProject(selectedProjInt);
             Console.ReadLine();
             ProjectMenu(selectedProjInt);
         }

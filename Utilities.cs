@@ -9,13 +9,16 @@ public class Utilities
         DateOnly today = DateOnly.FromDateTime(DateTime.Now); // Gets Today's date.
         int projectDaysBetween = (proj.GoalDate.ToDateTime(TimeOnly.MinValue) - proj.StartDate.ToDateTime(TimeOnly.MinValue)).Days; // Gets total days of project.
         int timeDaysBetween = (proj.GoalDate.ToDateTime(TimeOnly.MinValue) - today.ToDateTime(TimeOnly.MinValue)).Days; // Gets number of days from Today to end of project.
-        // int daysPast = projectDaysBetween - timeDaysBetween; // Gets Days since project started.
-        int daysPast = 2; // Place Filler for real var.
+        int daysPast = projectDaysBetween - timeDaysBetween; // Gets Days since project started.
+        // int daysPast = 2; // Place Filler for real var.
         DrawBar(daysPast, projectDaysBetween);
-        Console.Write($"ProjDays: {projectDaysBetween}, DaysPast: {daysPast}\n");
+        int intPercent = (int)Math.Round((double)daysPast / projectDaysBetween * 100.0);
+        Console.Write($"Days: {daysPast}/{projectDaysBetween}\t{intPercent}%\n");
 
         // Draw Completed Bar.
         DrawBar(proj.CompletedTasks, proj.TotalTasks);
+        intPercent = (int)Math.Round((double)proj.CompletedTasks / proj.TotalTasks * 100.0);
+        Console.Write($"Tasks: {proj.CompletedTasks}/{proj.TotalTasks}\t{intPercent}%\n");
 
         Console.Write("\n");
     }
