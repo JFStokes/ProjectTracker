@@ -35,6 +35,7 @@ public class ProjectTask
     public int Id { get; set; }
     public string TaskName { get; set; } = "EMPTY";
     public DateOnly TaskGoalDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+    public bool TaskComplete { get; set; } = false;
     public int? ProjectId { get; set; }
     public Project? Project { get; set; }
 }
