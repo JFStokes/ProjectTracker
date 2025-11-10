@@ -72,6 +72,7 @@ public class CRUD
 
         using (var context = new ProjectTrackerContext())
         {
+            // Create the new ProjectTask.
             var task = new ProjectTask
             {
                 ProjectId = projId,
@@ -79,12 +80,38 @@ public class CRUD
                 TaskGoalDate = due
             };
             context.Add(task);
+
+            // Project.TotalTasks += 1.
+            var proj = context.Projects.Include(p => p.ProjectTasks)
+                .FirstOrDefault(p => p.Id == projId);
+            if (proj == null)
+            {
+                Console.WriteLine($"Project with ID: {projId} not found..");
+                return;
+            }
+            proj.TotalTasks += 1;
             await context.SaveChangesAsync();
             Console.Write("Task added to the Project...");
         }
     }
 
     // ########## SHOW TASKS ########## 
+    public async static Task ShowTasks(int projId)
+    {
+        Console.WriteLine("\nTASK\t\t\tDUE_DATE\t\tCOMPLETE\t\tID");
+        using (var context = new ProjectTrackerContext())
+        {
+            var proj = await context.Projects
+                .Include(p => p.ProjectTasks)
+                .SingleAsync(p => p.Id == projId);
+            
+            foreach (ProjectTask t in proj.ProjectTasks)
+            {
+                Console.WriteLine($"{t.TaskName}\t\t{t.TaskGoalDate}\t\t{t.TaskComplete}\t\t\t{t.Id}");
+            }
+        }
+        Console.Write("\n");
+    }
 
     // ########## COMPLETE TASK ########## 
 

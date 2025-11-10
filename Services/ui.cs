@@ -65,7 +65,7 @@ public class UI
         await CRUD.ShowSingleProject(projId);
 
         // Show Tasks.
-        Console.WriteLine("\n>>> SHOW TASKS HERE <<<\n");
+        await CRUD.ShowTasks(selectedProjInt);
 
         // Show Options.
         Console.WriteLine("1) Edit Project");
