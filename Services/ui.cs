@@ -116,9 +116,9 @@ public class UI
         }
         else if (input == "dp")
         {
-            Console.WriteLine(">>> DELETE PROJECT HERE <<<");
+            await CRUD.DeleteProject(selectedProjInt);
             Console.ReadLine();
-            ProjectMenu(selectedProjInt);
+            MainMenu();
         }
         else if (input == "m")
         {

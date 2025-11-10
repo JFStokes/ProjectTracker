@@ -34,7 +34,7 @@ public class CRUD
             Console.WriteLine("PROJECT\t\tSTART-DATE\t\tGOAL-DATE\n");
             foreach (Project p in proj)
             {
-                Console.WriteLine($"{p.ProjectName}\t\t{p.StartDate}\t\t{p.GoalDate}");
+                Console.WriteLine($"{p.ProjectName}\t\t{p.StartDate}\t\t{p.GoalDate}\tID: {p.Id}");
                 await Utilities.ProgressBar(p);
                 Console.Write("\n");
             }
@@ -79,6 +79,38 @@ public class CRUD
     // ########## COMPLETE PROJECT ########## 
 
     // ########## DELETE PROJECT ########## 
+    public async static Task DeleteProject(int projId)
+    {
+        Console.WriteLine("Enter 'DELETE' if you are sure you want to delete this project.");
+        Console.Write("-> ");
+        string inputStr = Console.ReadLine()!;
+
+        if (inputStr == "DELETE")
+        {
+            using (var context = new ProjectTrackerContext())
+            {
+                var proj = await context.Projects.SingleAsync(p => p.Id == projId);
+                string projName = proj.ProjectName;
+                // Remove any tasks that reference this project first to avoid foreign-key constraint failures
+                var tasks = await context.projectTasks
+                    .Where(t => t.ProjectId == projId)
+                    .ToListAsync();
+
+                if (tasks.Count > 0)
+                {
+                    context.projectTasks.RemoveRange(tasks);
+                }
+
+                context.Projects.Remove(proj);
+                await context.SaveChangesAsync();
+                Console.Write($"{projName} (ID: {projId}) has been DELETED...");
+            }
+        }
+        else
+        {
+            Console.Write("\nInvalid entry...");
+        }
+    }
 
     // ########## NEW TASK ########## 
     public async static Task CreateTask(int projId)
