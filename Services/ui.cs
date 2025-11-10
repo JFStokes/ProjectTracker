@@ -96,7 +96,7 @@ public class UI
         }
         else if (input == "3")
         {
-            Console.WriteLine(">>> COMPLETE TASK HERE <<<");
+            await CRUD.CompleteTask();
             Console.ReadLine();
             ProjectMenu(selectedProjInt);
         }

@@ -104,7 +104,7 @@ public class CRUD
             var proj = await context.Projects
                 .Include(p => p.ProjectTasks)
                 .SingleAsync(p => p.Id == projId);
-            
+
             foreach (ProjectTask t in proj.ProjectTasks)
             {
                 Console.WriteLine($"{t.TaskName}\t\t{t.TaskGoalDate}\t\t{t.TaskComplete}\t\t\t{t.Id}");
@@ -114,6 +114,42 @@ public class CRUD
     }
 
     // ########## COMPLETE TASK ########## 
+    public async static Task CompleteTask()
+    {
+        // Get user input.
+        Console.WriteLine("\nMarking Task COMPLETE...");
+        Console.Write("Task ID: ");
+        string? taskIdStr = Console.ReadLine();
+        int taskIdInt = Convert.ToInt32(taskIdStr);
+
+        
+        using (var context = new ProjectTrackerContext())
+        {
+            // Get the correct ProjectTask object.
+            var projTask = await context.Set<ProjectTask>()
+                .Include(t => t.Project)
+                .SingleOrDefaultAsync(t => t.Id == taskIdInt);
+
+            if (projTask == null)
+            {
+                Console.WriteLine($"Task with ID: {taskIdInt} was not found...");
+                return;
+            }
+
+            // Mark the Task Complete.
+            projTask.TaskComplete = true;
+
+            // The Task's Project.CompletedTasks += 1.
+            if (projTask.Project != null)
+            {
+                projTask.Project.CompletedTasks += 1;
+            }
+
+            // Save changes to the Database.
+            await context.SaveChangesAsync();
+        }
+    }
 
     // ########## DELETE TASK ########## 
+    
 }
