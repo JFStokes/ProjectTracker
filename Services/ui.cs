@@ -1,11 +1,22 @@
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.EntityFrameworkCore;
+
 public class UI
 {
+    // Global var for selected Project.
+    public static int selectedProjInt { get; set; }
+        
     // ########## MAIN MENU ########## 
     public async static void MainMenu()
     {
+        
+        
         // Show Projects.
         Console.Clear();
-        Console.WriteLine("----- MAIN MENU -----");
+        Console.WriteLine("|==================================================|");
+        Console.WriteLine("|                     MAIN MENU                    |");
+        Console.WriteLine("|==================================================|");
+
         await CRUD.ShowProjects();
 
         // Show Options.
@@ -21,7 +32,11 @@ public class UI
         // Logic.
         if (input == "1")
         {
-            ProjectMenu();
+            Console.Write("Selected Project ID: ");
+            string? selectedProjStr = Console.ReadLine();
+            selectedProjInt = Convert.ToInt32(selectedProjStr);
+            
+            ProjectMenu(selectedProjInt);
         }
         else if (input == "2")
         {
@@ -42,12 +57,12 @@ public class UI
     }
     
     // ########## PROJECT MENU ########## 
-    public async static void ProjectMenu()
+    public async static void ProjectMenu(int projId)
     {
         // Show Project.
         Console.Clear();
-        Console.WriteLine("----- PROJECT MENU -----");
-        Console.WriteLine(">>> SHOW PROJECT HERE <<<");
+        Console.WriteLine("------------------ PROJECT MENU ------------------");
+        await CRUD.ShowSingleProject(projId);
 
         // Show Tasks.
         Console.WriteLine("\n>>> SHOW TASKS HERE <<<\n");
@@ -71,37 +86,37 @@ public class UI
         {
             Console.WriteLine(">>> EDIT PROJECT HERE <<<");
             Console.ReadLine();
-            ProjectMenu();
+            ProjectMenu(selectedProjInt);
         }
         else if (input == "2")
         {
             Console.WriteLine(">>> ADD TASK HERE <<<");
             Console.ReadLine();
-            ProjectMenu();
+            ProjectMenu(selectedProjInt);
         }
         else if (input == "3")
         {
             Console.WriteLine(">>> COMPLETE TASK HERE <<<");
             Console.ReadLine();
-            ProjectMenu();
+            ProjectMenu(selectedProjInt);
         }
         else if (input == "4")
         {
             Console.WriteLine(">>> COMPLETE PROJECT HERE <<<");
             Console.ReadLine();
-            ProjectMenu();
+            ProjectMenu(selectedProjInt);
         }
         else if (input == "dt")
         {
             Console.WriteLine(">>> DELETE TASK HERE <<<");
             Console.ReadLine();
-            ProjectMenu();
+            ProjectMenu(selectedProjInt);
         }
         else if (input == "dp")
         {
             Console.WriteLine(">>> DELETE PROJECT HERE <<<");
             Console.ReadLine();
-            ProjectMenu();
+            ProjectMenu(selectedProjInt);
         }
         else if (input == "m")
         {
@@ -111,7 +126,7 @@ public class UI
         {
             Console.WriteLine("\n----- INVALID SELECTION -----\n");
             Console.ReadLine();
-            ProjectMenu();
+            ProjectMenu(selectedProjInt);
         }
     }
 }

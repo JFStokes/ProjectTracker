@@ -22,7 +22,7 @@ public class CRUD
         Console.ReadLine();
     }
 
-    // ########## SHOW PROJECT ########## 
+    // ########## SHOW PROJECTS ########## 
     public static async Task ShowProjects()
     {
         using (var context = new ProjectTrackerContext())
@@ -31,11 +31,26 @@ public class CRUD
                 .Where(p => p.ProjectComplete == false)
                 .ToListAsync();
 
-            Console.WriteLine("PROJECT\t\tSTART-DATE\t\tGOAL-DATE");
+            Console.WriteLine("PROJECT\t\tSTART-DATE\t\tGOAL-DATE\n");
             foreach (Project p in proj)
             {
                 Console.WriteLine($"{p.ProjectName}\t\t{p.StartDate}\t\t{p.GoalDate}");
+                await Utilities.ProgressBar(p);
+                Console.Write("\n");
             }
+        }
+    }
+
+    // ########## SHOW SINGLE PROJECT ########## 
+    public static async Task ShowSingleProject(int id)
+    {
+        using (var context = new ProjectTrackerContext())
+        {
+            var proj = await context.Projects.SingleAsync(p => p.Id == id);
+            Console.WriteLine("PROJECT\t\tSTART-DATE\t\tGOAL-DATE\n");
+            Console.WriteLine($"{proj.ProjectName}\t\t{proj.StartDate}\t\t{proj.GoalDate}");
+            await Utilities.ProgressBar(proj);
+            Console.Write("\n");
         }
     }
 
