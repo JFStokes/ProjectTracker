@@ -61,6 +61,28 @@ public class CRUD
     // ########## DELETE PROJECT ########## 
 
     // ########## NEW TASK ########## 
+    public async static Task CreateTask(int projId)
+    {
+        Console.WriteLine("\nAdding a new Task to the Project...");
+        Console.Write("Task Name: ");
+        string taskName = Console.ReadLine()!;
+        Console.Write("Due Date(MM-DD-YYYY): ");
+        string dueStr = Console.ReadLine()!;
+        DateOnly.TryParse(dueStr, out DateOnly due);
+
+        using (var context = new ProjectTrackerContext())
+        {
+            var task = new ProjectTask
+            {
+                ProjectId = projId,
+                TaskName = taskName,
+                TaskGoalDate = due
+            };
+            context.Add(task);
+            await context.SaveChangesAsync();
+            Console.Write("Task added to the Project...");
+        }
+    }
 
     // ########## SHOW TASKS ########## 
 

@@ -90,7 +90,7 @@ public class UI
         }
         else if (input == "2")
         {
-            Console.WriteLine(">>> ADD TASK HERE <<<");
+            await CRUD.CreateTask(selectedProjInt);
             Console.ReadLine();
             ProjectMenu(selectedProjInt);
         }
