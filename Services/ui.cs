@@ -32,10 +32,12 @@ public class UI
         // Logic.
         if (input == "1")
         {
+            // Get user input.
             Console.Write("Selected Project ID: ");
             string? selectedProjStr = Console.ReadLine();
             selectedProjInt = Convert.ToInt32(selectedProjStr);
             
+            // Run ProjectMenu.
             ProjectMenu(selectedProjInt);
         }
         else if (input == "2")

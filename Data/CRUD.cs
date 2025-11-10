@@ -46,11 +46,31 @@ public class CRUD
     {
         using (var context = new ProjectTrackerContext())
         {
-            var proj = await context.Projects.SingleAsync(p => p.Id == id);
-            Console.WriteLine("PROJECT\t\tSTART-DATE\t\tGOAL-DATE\n");
-            Console.WriteLine($"{proj.ProjectName}\t\t{proj.StartDate}\t\t{proj.GoalDate}");
-            await Utilities.ProgressBar(proj);
-            Console.Write("\n");
+            try
+            {
+                var proj = await context.Projects.SingleAsync(p => p.Id == id);
+                Console.WriteLine("PROJECT\t\tSTART-DATE\t\tGOAL-DATE\n");
+                Console.WriteLine($"{proj.ProjectName}\t\t{proj.StartDate}\t\t{proj.GoalDate}");
+                await Utilities.ProgressBar(proj);
+                Console.Write("\n");
+            }
+            catch (InvalidOperationException)
+            {
+                Console.Clear();
+                Console.WriteLine("----------------------ERROR-----------------------");
+                Console.Write("INVALID ID...");
+                Console.ReadLine();
+                UI.MainMenu();
+            }
+            catch (Exception ex)
+            {
+                Console.Clear();
+                Console.WriteLine("----------------------ERROR-----------------------");
+                Console.WriteLine($"Something went wrong: {ex.Message}");
+                Console.WriteLine($"Exception type: {ex.GetType().Name}");
+                Console.ReadLine();
+                UI.MainMenu();
+            }
         }
     }
 
@@ -109,8 +129,8 @@ public class CRUD
             {
                 Console.WriteLine($"{t.TaskName}\t\t{t.TaskGoalDate}\t\t{t.TaskComplete}\t\t\t{t.Id}");
             }
+            Console.Write("\n");
         }
-        Console.Write("\n");
     }
 
     // ########## COMPLETE TASK ########## 
