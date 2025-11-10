@@ -185,7 +185,12 @@ public class CRUD
                 .Include(p => p.ProjectTasks)
                 .SingleAsync(p => p.Id == projId);
 
-            foreach (ProjectTask t in proj.ProjectTasks)
+            // Sort Tasks by GoalDate.
+            var sortedTasks = proj.ProjectTasks
+                .OrderBy(t => t.TaskGoalDate)
+                .ToList();
+
+            foreach (ProjectTask t in sortedTasks)
             {
                 Console.WriteLine($"{t.TaskName}\t\t{t.TaskGoalDate}\t\t{t.TaskComplete}\t\t\t{t.Id}");
             }
