@@ -32,10 +32,17 @@ public class CRUD
                 .Where(p => p.ProjectComplete == false)
                 .ToListAsync();
 
-            Console.WriteLine("PROJECT\t\tSTART-DATE\t\tGOAL-DATE\n");
+            // Console.WriteLine("PROJECT\t\tSTART-DATE\t\tGOAL-DATE\n");
+            Console.WriteLine($"{"PROJECT",-40}{"START_DATE",-15}{"GOAL_DATE",-15}");
             foreach (Project p in proj)
             {
-                Console.WriteLine($"{p.ProjectName}\t\t{p.StartDate}\t\t{p.GoalDate}\tID: {p.Id}");
+                // Write ProjectName highlighted yellow.
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write($"{p.ProjectName,-40}");
+                Console.ResetColor();
+
+                // Write the rest of the line.
+                Console.WriteLine($"{p.StartDate,-15}{p.GoalDate,-15}ID: {p.Id,-10}");
                 await Utilities.ProgressBar(p);
                 Console.Write("\n");
             }
@@ -50,10 +57,9 @@ public class CRUD
             try
             {
                 var proj = await context.Projects.SingleAsync(p => p.Id == id);
-                Console.WriteLine("PROJECT\t\tSTART-DATE\t\tGOAL-DATE\n");
+                Console.WriteLine("PROJECT\t\tSTART-DATE\t\tGOAL-DATE");
                 Console.WriteLine($"{proj.ProjectName}\t\t{proj.StartDate}\t\t{proj.GoalDate}");
                 await Utilities.ProgressBar(proj);
-                Console.Write("\n");
             }
             catch (InvalidOperationException)
             {
@@ -178,7 +184,7 @@ public class CRUD
     // ########## SHOW TASKS ########## 
     public async static Task ShowTasks(int projId)
     {
-        Console.WriteLine("\nTASK\t\t\tDUE_DATE\t\tCOMPLETE\t\tID");
+        Console.WriteLine($"{"TASK",-20}{"DUE_DATE",-15}{"STATUS",-10}{"ID",-5}");
         using (var context = new ProjectTrackerContext())
         {
             var proj = await context.Projects
@@ -192,7 +198,18 @@ public class CRUD
 
             foreach (ProjectTask t in sortedTasks)
             {
-                Console.WriteLine($"{t.TaskName}\t\t{t.TaskGoalDate}\t\t{t.TaskComplete}\t\t\t{t.Id}");
+                Console.Write($"{t.TaskName,-20}{t.TaskGoalDate,-15}");
+
+                // If Complete, use GREEN text.
+                if (t.TaskComplete)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+
+                Console.Write($"{(t.TaskComplete ? "Complete" : "Planned"),-10}");
+                Console.ResetColor();
+
+                Console.WriteLine($"{t.Id,-5}");
             }
             Console.Write("\n");
         }
