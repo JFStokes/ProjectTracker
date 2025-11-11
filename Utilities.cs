@@ -10,15 +10,23 @@ public class Utilities
         int projectDaysBetween = (proj.GoalDate.ToDateTime(TimeOnly.MinValue) - proj.StartDate.ToDateTime(TimeOnly.MinValue)).Days; // Gets total days of project.
         int timeDaysBetween = (proj.GoalDate.ToDateTime(TimeOnly.MinValue) - today.ToDateTime(TimeOnly.MinValue)).Days; // Gets number of days from Today to end of project.
         int daysPast = projectDaysBetween - timeDaysBetween; // Gets Days since project started.
-        DrawBar(daysPast, projectDaysBetween, "days", 0, 0);
         int intPercentDays = (int)Math.Round((double)daysPast / projectDaysBetween * 100.0);
-        Console.Write($"Days: {daysPast}/{projectDaysBetween}\t{intPercentDays}%\n");
+
+        // Check if Project has started.
+        if (daysPast < 0)
+        {
+            Console.Write("Project not started...............................\n");
+        }
+        else
+        {
+            DrawBar(daysPast, projectDaysBetween, "days", 0, 0);
+            Console.Write($"Days: {daysPast}/{projectDaysBetween}\t{intPercentDays}%\n");
+        }
 
         // Draw Completed Bar.
         int intPercentTasks = (int)Math.Round((double)proj.CompletedTasks / proj.TotalTasks * 100.0);
         DrawBar(proj.CompletedTasks, proj.TotalTasks, "tasks", intPercentDays, intPercentTasks);
         Console.Write($"Tasks: {proj.CompletedTasks}/{proj.TotalTasks}\t{intPercentTasks}%\n");
-
         Console.Write("\n");
     }
 
