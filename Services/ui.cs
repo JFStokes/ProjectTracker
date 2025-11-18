@@ -104,7 +104,7 @@ public class UI
         }
         else if (input == "4")
         {
-            Console.WriteLine(">>> COMPLETE PROJECT HERE <<<");
+            await CRUD.CompleteProject(selectedProjInt);
             Console.ReadLine();
             ProjectMenu(selectedProjInt);
         }

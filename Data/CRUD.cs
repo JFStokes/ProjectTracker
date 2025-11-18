@@ -111,6 +111,18 @@ public class CRUD
     }
 
     // ########## COMPLETE PROJECT ########## 
+    public async static Task CompleteProject(int projId)
+    {
+        using (var context = new ProjectTrackerContext())
+        {
+            var proj = await context.Projects.SingleAsync(p => p.Id == projId);
+            proj.ProjectComplete = true;
+            string projName = proj.ProjectName;
+
+            await context.SaveChangesAsync();
+            Console.WriteLine($"{projName} has been marked COMPLETE...");
+        }
+    }
 
     // ########## DELETE PROJECT ########## 
     public async static Task DeleteProject(int projId)
